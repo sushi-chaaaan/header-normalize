@@ -9,6 +9,7 @@ const honoRoute = new Hono()
       if (!("X-API-Key" in v)) {
         throw new HTTPException(400, { message: "Invalid header" });
       }
+      return { "X-API-Key": v["X-API-Key"] };
     }),
     (c) => {
       const h = c.req.valid("header");
@@ -22,6 +23,7 @@ const honoRoute = new Hono()
       if (!("x-api-key" in v)) {
         throw new HTTPException(400, { message: "Invalid header" });
       }
+      return { "x-api-key": v["x-api-key"] };
     }),
     (c) => {
       const h = c.req.valid("header");
