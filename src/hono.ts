@@ -5,7 +5,9 @@ import { validator } from "hono/validator";
 const honoRoute = new Hono()
   .get(
     "/upper",
-    validator("header", (v) => {
+    validator("header", (v, c) => {
+      console.log("Actual header:");
+      console.log(c.req.raw.headers);
       if (!("X-API-Key" in v)) {
         throw new HTTPException(400, { message: "Invalid header" });
       }
@@ -19,7 +21,9 @@ const honoRoute = new Hono()
   )
   .get(
     "/lower",
-    validator("header", (v) => {
+    validator("header", (v, c) => {
+      console.log("Actual header:");
+      console.log(c.req.raw.headers);
       if (!("x-api-key" in v)) {
         throw new HTTPException(400, { message: "Invalid header" });
       }
