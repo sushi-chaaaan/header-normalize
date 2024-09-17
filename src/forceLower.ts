@@ -45,4 +45,9 @@ const errorIfUpperCaseKeyZod = <SCHEMA extends AnyZodObject>(
 ) => {};
 
 errorIfUpperCaseKeyZod(lower); // OK
-errorIfUpperCaseKeyZod(upper); // Error
+
+/**
+ * Argument of type 'ZodObject<{ Name: ZodString; Email: ZodString; }, "strip", ZodTypeAny, { Name: string; Email: string; }, { Name: string; Email: string; }>'
+ * is not assignable to parameter of type 'never'.
+ */
+errorIfUpperCaseKeyZod(upper);
