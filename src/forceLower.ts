@@ -1,4 +1,4 @@
-import { AnyZodObject, ZodObject, z } from "zod";
+import { AnyZodObject, z } from "zod";
 
 type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
   ? 1
@@ -6,22 +6,13 @@ type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y
   ? true
   : false;
 
-type LowercasedKeys<T> = keyof T extends string
-  ? {
-      [K in keyof T as Lowercase<K>]: T[K];
-    }
+type NeverIfUpperCaseKey<T extends string> = Equal<T, Lowercase<T>> extends true
+  ? T
   : never;
 
-type NeverIfUpperCaseKey<T> = keyof T extends string
-  ? Equal<keyof LowercasedKeys<T>, keyof T> extends true
-    ? T
-    : never
-  : T;
-
-type ExtractKeyFromZodObject<SCHEMA extends AnyZodObject> =
-  SCHEMA extends ZodObject<infer S>
-    ? ReturnType<SCHEMA["keyof"]>["Values"]
-    : never;
+type ExtractKeyFromZodObject<SCHEMA extends AnyZodObject> = z.output<
+  ReturnType<SCHEMA["keyof"]>
+>;
 
 type ForcedLowerCaseKeyZod<SCHEMA extends AnyZodObject> =
   ExtractKeyFromZodObject<SCHEMA> extends never
